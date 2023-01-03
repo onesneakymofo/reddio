@@ -1,1 +1,7 @@
-<div id="app"></div>
+<%= tag :div,
+  id: "app",
+  data: {
+    subreddits: Constants::SUBREDDITS,
+    occurrences: Constants::OCCURRENCES
+  }.to_json
+%>
