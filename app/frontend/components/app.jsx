@@ -18,16 +18,15 @@ const App = ({subreddits, occurrences}) => {
   const {playing, muted, volume, playbackRate, played, seeking, buffer} = videoState
 
   const [listings, setListings] = useState([])
-  const [url, setUrl] = useState([])
-  const [subreddit, setSubreddit] = useState(subreddits[0])
-  const [occurrence, setOccurrence] = useState(occurrences[0])
+  const [listing, setListing] = useState(null)
+  const [subreddit, setSubreddit] = useState(subreddits[2])
+  const [occurrence, setOccurrence] = useState(occurrences[2])
   const mediaRegex =  /https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be|soundcloud\.com)\//;
 
   const getListings = () => {
     fetch(`/reddit?occurrence=${occurrence}&subreddit=${subreddit}`)
     .then((response) => response.json())
     .then((data) => data['data']['children'].filter(listing => {
-      console.log(listing['data']['url'])
       return mediaRegex.test(listing['data']['url'])
     }))
     .then((filteredListings) => (
@@ -120,63 +119,62 @@ const App = ({subreddits, occurrences}) => {
 
   return (
     <>
-      <div class="flex flex-col h-screen text-white">
-        <main class="container flex-1 mx-auto flex flex-col">
-          <div className="flex flex-col container max-w-md w-full items-center rounded-lg">
-
+      <div class="flex flex-row h-screen text-white">
+        <aside class="w-52 bg-zinc-800 overflow-y border-r border-zinc-700 h-screen">
+          <div class="text-center border-b border-zinc-800 p-3">
             <h3>Reddio</h3>
             <i className="text-sm text-zinc-500">Curated by Redditors</i>
-            <div class="mb-3"></div>
-            <div class="flex flex-row w-full justify-between mb-3">
-              <div>
-                r/<select
-                  value={subreddit}
-                  className="text-black"
-                  onChange={(event) => {setSubreddit(event.target.value); getListings()}}>
-                  {
-                    subreddits.map((subreddit, index) => (
-                      <option key={index} value={subreddit}>{subreddit}</option>
-                    ))
-                  }
-                </select>
+          </div>
+
+          <div class="text-center border-y border-zinc-700 p-3">
+            Top of this &nbsp;
+            <select
+              value={occurrence}
+              className="text-black"
+              onChange={(event) => {setOccurrence(event.target.value); getListings()} }>
+              {
+                occurrences.map((occurrence, index) => (
+                  <option key={index} value={occurrence}>{occurrence}</option>
+                ))
+              }
+            </select>
+          </div>
+          {
+            subreddits.map((subreddit, index) => (
+              <div className="p-2 text-neutral-400 text-sm">
+                r/<button key={index} value={subreddit} onClick={()=> setSubreddit(subreddit)}>{subreddit}</button>
               </div>
-              <div>
-                Top of this &nbsp;
-                <select
-                  value={occurrence}
-                  className="text-black"
-                  onChange={(event) => {setOccurrence(event.target.value); getListings()} }>
-                  {
-                    occurrences.map((occurrence, index) => (
-                      <option key={index} value={occurrence}>{occurrence}</option>
-                    ))
-                  }
-                </select>
-              </div>
-            </div>
-            <div>
-              <ul className="flex flex-col w-full">
-                {
-                  listings.map((listing, index) => (
-                    <li className="flex flex-row p-3">
-                      <button onClick={() => setUrl(listing['data']['url'])}>{listing['data']['title']}</button>
-                    </li>
-                  ))
-                }
-              </ul>
-            </div>
+            ))
+          }
+
+          <div className="fixed bottom-20 left-0 h-52 w-52">
+            <ReactPlayer
+            ref={playerRef}
+            playing={playing}
+            url={listing?.data?.url}
+            muted={muted}
+            width='100%'
+            height='100%'
+            onProgress={progressHandler}/>
+          </div>
+        </aside>
+        <main class="p-3 flex-1 mx-auto flex flex-col w-full">
+          <div class="w-full">
+            <ul className="flex flex-col w-full">
+              {
+                listings.map((listing, index) => (
+                  <li className="flex justify-between items-center flex-row p-3 gap-4">
+                    {console.log(listing)}
+                    <div className="flex-none">{index + 1}</div>
+                    <div className="flex-none">{listing.data.score}</div>
+                    <div className="flex-none"><img className="h-10 w-10" src={listing.data.thumbnail} /></div>
+                    <div className="flex-1"><button onClick={() => setListing(listing)}>{listing['data']['title']}</button></div>
+                  </li>
+                ))
+              }
+            </ul>
           </div>
         </main>
-      </div>
-      <div className="fixed bottom-20 left-0 h-52 w-52">
-        <ReactPlayer
-        ref={playerRef}
-        playing={playing}
-        url={url}
-        muted={muted}
-        width='100%'
-        height='100%'
-        onProgress={progressHandler}/>
       </div>
       <div class="fixed bottom-0 h-20 bg-indigo-700 w-full">
         <div className="flex justify-between items-center h-full w-50">
