@@ -86,7 +86,12 @@ const App = ({subreddits, occurrences}) => {
     return (
       <>
         <div class="basis-1/3">
-
+          <div className="flex flex-row items-center gap-2">
+            <img className="h-14 w-14" src={listing?.data?.thumbnail} />
+            <div className="flex flex-col">
+              <div className="text-white">{listing?.data?.title}</div>
+            </div>
+          </div>
         </div>
         <div className=" basis-1/3 flex flex-col items-center w-full">
           <div className="flex flex-row items-center">
@@ -94,7 +99,7 @@ const App = ({subreddits, occurrences}) => {
               {formatTime(playerRef?.current?.getCurrentTime())}
             </div>
 
-            <div class="grow bg-indigo-500 rounded-full h-1.5 w-80">
+            <div class="grow bg-violet-500 rounded-full h-1.5 w-80">
               <div class="bg-white h-1.5 rounded-full" style={{width: `${played * 100}%`}}></div>
             </div>
             <div class="text-xs ml-1 text-white">
@@ -108,7 +113,7 @@ const App = ({subreddits, occurrences}) => {
         </div>
         <div class="basis-1/3">
           <div class="flex justify-end mr-2">
-            <div class="bg-indigo-500 rounded-full h-1.5 w-28">
+            <div class="bg-violet-500 rounded-full h-1.5 w-28">
               <div class="bg-white h-1.5 rounded-full" style={{width: `${volume * 100}%`}}></div>
             </div>
           </div>
@@ -160,6 +165,7 @@ const App = ({subreddits, occurrences}) => {
         </aside>
         <main class="p-3 flex-1 mx-auto flex flex-col w-full">
           <div class="w-full">
+            <div className="text-zinc-400 pb-3 border-b border-zinc-800">Music from <h2 className="text-white"><span className="text-zinc-400">r/</span>{subreddit}</h2></div>
             <ul className="flex flex-col w-full">
               {
                 listings.map((listing, index) => (
@@ -176,7 +182,7 @@ const App = ({subreddits, occurrences}) => {
           </div>
         </main>
       </div>
-      <div class="fixed bottom-0 h-20 bg-indigo-700 w-full">
+      <div class="fixed bottom-0 h-20 bg-violet-800 w-full border-t border-violet-600">
         <div className="flex justify-between items-center h-full w-50">
           <PlayerApp />
         </div>
