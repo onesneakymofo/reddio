@@ -43,7 +43,7 @@ const App = ({subreddits, occurrences}) => {
 
   useEffect(() => {
       getListings()
-    }, [subreddit, occurrence]);
+    }, []);
 
   const handleRewind = () => {
     playerRef.current.seekTo(playerRef.current.getCurrentTime() - 15);
