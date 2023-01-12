@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
   root to: 'app#index'
 
-  resource 'reddit', only: %w(index show)
+  resource 'listing', only: %w(show)
 end

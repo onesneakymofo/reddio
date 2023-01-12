@@ -4,22 +4,24 @@ class CreateTables < ActiveRecord::Migration[7.0]
 
     create_table :subreddits do |t|
       t.string :name
-      t.timestamp
+      t.timestamps
     end
 
     create_table :listings do |t|
-      t.timestamps
-      t.references :tank, foreign_key: true
-      t.integer :external_id, unique: true, null: false
+      t.string :reddit_id, unique: true, null: false
       t.integer :score, null: false
       t.string :description
-      t.added_at :datetime, null: false
+      t.datetime :added_at, null: false
+      t.timestamps
     end
 
-    create_table :listing_details do |t|
+    create_table :video_details do |t|
       t.references :listing, foreign_key: true
       t.text :url
       t.string :video_id, null: false, unique: true
+      t.text :title, null: false, unique: true
+      t.text :owner, null: false, unique: true
+      t.text :duration, null: false, unique: true
       t.timestamps
     end
   end

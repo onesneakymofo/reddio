@@ -1,5 +1,4 @@
-class ListingHydrater
-
+class ListingCreator
   def self.call(listing)
     new(listing).execute
   end
@@ -10,12 +9,12 @@ class ListingHydrater
   end
 
   def execute
-    hydrate
+    listng = create_listing
   end
 
   private
 
-  def hydrate
+  def create_listing
     Listing.create(description: listing[:description], external_id: listing[:id], score: listing[:score], added_at: find_datetime)
   end
 

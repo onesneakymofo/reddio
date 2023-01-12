@@ -25,7 +25,7 @@ const App = ({subreddits, occurrences}) => {
   const mediaRegex =  /https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be|soundcloud\.com)\//;
 
   const getListings = () => {
-    fetch(`/reddit?occurrence=${occurrence}&subreddit=${subreddit}`)
+    fetch(`/listings?occurrence=${occurrence}&subreddit=${subreddit}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Reddit is too busy right now.');

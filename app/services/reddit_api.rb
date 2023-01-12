@@ -13,6 +13,7 @@ class RedditApi
 
   private
 
+  # recursively call Reddit's API until we have no more pagination left
   def find_listings(after = nil)
     response = HTTParty.get("https://www.reddit.com/r/#{subreddit}/top.json?t=#{occurrence}&after=#{after}")
     if response.ok? && response.dig("data").present?

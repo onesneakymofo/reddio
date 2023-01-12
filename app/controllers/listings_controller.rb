@@ -1,4 +1,4 @@
-class RedditsController < ApplicationController
+class ListingsController < ApplicationController
   def show
     respond_to do |format|
       listings = Listing.joins(:subreddits)
